@@ -1,0 +1,52 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOriginPatterns:
+              - "http://localhost:*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+      routes:
+        - id: product-catalog-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/products/**,/r/**
+        - id: order-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/orders/**
+        - id: payment-service
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/payments/**
+        - id: inventory-service
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/inventory/**
+        - id: notification-service
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/notifications/**
+
+orbit:
+  ratelimit:
+    capacity: 20          # bucket size -> allows short bursts
+    refill-per-second: 5  # steady-state allowed rate per client
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

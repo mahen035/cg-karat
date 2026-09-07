@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: product-catalog-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/karatdb
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: pass123
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+orbit:
+  shortlink:
+    base-url: http://localhost:8080/r
+
+
