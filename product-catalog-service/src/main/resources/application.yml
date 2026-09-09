@@ -5,11 +5,16 @@ spring:
   application:
     name: product-catalog-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/karatdb
+    url: jdbc:postgresql://postgres-container:5432/demodb
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: pass123
+    password: demo123
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Kolkata
     hibernate:
       ddl-auto: update
     show-sql: true
