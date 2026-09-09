@@ -1,0 +1,30 @@
+services:
+  product-catalog-service:
+    image: orbit/product-catalog-service:latest
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    networks:
+      - orbit-network
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: demodb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: demo123
+    ports:
+      - "5432:5432"
+    networks:
+      - orbit-network
+    volumes:
+      - orbit-postgres-data:/var/lib/postgresql/data
+
+networks:
+  orbit-network:
+
+volumes:
+  orbit-postgres-data:
