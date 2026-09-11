@@ -1,6 +1,5 @@
 package com.orbit.catalog;
 
-
 import com.orbit.catalog.entity.Product;
 import com.orbit.catalog.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,7 +46,6 @@ class ProductCatalogIntegrationTest {
         registry.add("spring.datasource.driver-class-name", postgres::getDriverClassName);
 
     }
-
     @LocalServerPort
     private int port;
 

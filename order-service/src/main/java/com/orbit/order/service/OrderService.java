@@ -2,6 +2,8 @@ package com.orbit.order.service;
 
 import com.orbit.order.client.InventoryClient;
 import com.orbit.order.client.PaymentClient;
+import com.orbit.order.client.ProductCatalogClient;
+import com.orbit.order.dto.ProductResponse;
 import com.orbit.order.entity.Order;
 import com.orbit.order.event.OrderEvent;
 import com.orbit.order.event.OrderEventPublisher;
@@ -28,16 +30,26 @@ public class OrderService {
     private final PaymentClient paymentClient;
     private final InventoryClient inventoryClient;
     private final OrderEventPublisher eventPublisher;
+    private final ProductCatalogClient productCatalogClient;
 
     public OrderService(OrderRepository orderRepository, PaymentClient paymentClient,
-                         InventoryClient inventoryClient, OrderEventPublisher eventPublisher) {
+                         InventoryClient inventoryClient, OrderEventPublisher eventPublisher,
+                        ProductCatalogClient productCatalogClient) {
         this.orderRepository = orderRepository;
         this.paymentClient = paymentClient;
         this.inventoryClient = inventoryClient;
         this.eventPublisher = eventPublisher;
+        this.productCatalogClient = productCatalogClient;
     }
 
-    public Order checkout(Long productId, int quantity, BigDecimal unitPrice) {
+    public Order checkout(Long productId, int quantity) {
+
+        ProductResponse product = productCatalogClient.getProductById(productId);
+
+        System.out.println("::::::Product service successfully called:::::::::");
+
+        BigDecimal unitPrice = product.getPrice();
+
         BigDecimal total = unitPrice.multiply(BigDecimal.valueOf(quantity));
 
         boolean reserved = inventoryClient.reserveStock(productId, quantity);

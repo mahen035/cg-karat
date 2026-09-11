@@ -5,10 +5,10 @@ spring:
   application:
     name: product-catalog-service
   datasource:
-    url: jdbc:postgresql://postgres:5432/demodb
+    url: jdbc:postgresql://localhost:5432/karatdb
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: demo123
+    password: pass123
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
