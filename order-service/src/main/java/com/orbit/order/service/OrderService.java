@@ -8,6 +8,8 @@ import com.orbit.order.entity.Order;
 import com.orbit.order.event.OrderEvent;
 import com.orbit.order.event.OrderEventPublisher;
 import com.orbit.order.repository.OrderRepository;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -42,9 +44,12 @@ public class OrderService {
         this.productCatalogClient = productCatalogClient;
     }
 
+    @CircuitBreaker(name="productCatalogService", fallbackMethod="getProductFallback")
     public Order checkout(Long productId, int quantity) {
 
         ProductResponse product = productCatalogClient.getProductById(productId);
+
+      //  ProductResponse product = getProduct(productId);
 
         System.out.println("::::::Product service successfully called:::::::::");
 
@@ -76,4 +81,15 @@ public class OrderService {
 
         return order;
     }
+
+//    @CircuitBreaker(name="productCatalogService", fallbackMethod="getProductFallback")
+//    private ProductResponse getProduct(Long productId){
+//        return productCatalogClient.getProductById(productId);
+//    }
+
+    public Order getProductFallback(Long productId, int quantity, Throwable throwable){
+        System.out.println(":::::Fallback working::::");
+        throw new RuntimeException("Product Catalog Service is not available currently");
+    }
+
 }
