@@ -26,6 +26,7 @@ public class ProductService {
 
     @Cacheable("products")
     public Optional<Product> findById(Long id) {
+
         return productRepository.findById(id);
     }
 
